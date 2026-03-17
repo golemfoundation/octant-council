@@ -38,7 +38,7 @@
         <mxCell id="v_1773727230436587" value="&lt;b&gt;Produce Structured Summary&lt;/b&gt;&lt;br&gt;Domain · Purpose&lt;br&gt;Data priorities · Eval priorities&lt;br&gt;Evidence standards&lt;br&gt;Goodhart risks · Skeptic focus&lt;br&gt;Out of scope · Core essence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
           <mxGeometry x="275.0" y="830.0" width="350.0" height="110.0" as="geometry" />
         </mxCell>
-        <mxCell id="v_1773727234529375" value="&lt;b&gt;RETURN to council:design&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="v_1773727234529375" value="&lt;b&gt;RETURN to council:setup&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
           <mxGeometry x="300.0" y="1010.0" width="300.0" height="50.0" as="geometry" />
         </mxCell>
         <mxCell id="e_1773727246846072" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="v_1773727194840149" target="v_1773727198709626">

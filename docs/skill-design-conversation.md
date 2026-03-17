@@ -1,6 +1,6 @@
 # Skill: design-conversation
 
-**Invocable:** No (called by `council:design`)
+**Invocable:** No (called by `council:setup`)
 **Args:** `[domain]` (e.g. `"DeFi protocols"`)
 **Tools:** Read
 

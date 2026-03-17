@@ -1,267 +1,526 @@
 ---
-description: Install the council plugin — shell alias + teams feature + permissions
+description: Design your evaluation council — domain, agents, lenses, data sources
+argument-hint: [domain]
 allowed-tools:
+  - Read
+  - Write
+  - Glob
   - Bash
   - AskUserQuestion
-model: inherit
+  - Skill
+  - EnterPlanMode
+  - ExitPlanMode
+  - Agent
+  - WebSearch
+  - WebFetch
+model: opus
 context: inherit
 user-invocable: true
 ---
 
-# Council Setup
+# Council Design — Design Your Evaluation Council
 
-Sets up the council plugin for a user. Detects or clones the repo, explains everything that will happen, asks for confirmation, then configures the shell.
+A planning skill that guides the user through designing a custom evaluation council. Two phases: conversational discovery → structured design → plan, then implementation via research/generate/document agents.
+
+Plan mode handles the plan file natively — no manual file writing needed.
 
 <progress>
-- [ ] Step 1: Detect environment + check for repo
-- [ ] Step 2: Explain everything, ask for confirmation
-- [ ] Step 3: Clone repo (if needed)
-- [ ] Step 4: Ask for alias name
-- [ ] Step 5: Validate alias is available
-- [ ] Step 6: Write alias + env var to shell config
-- [ ] Step 7: Report success + dev tips
+- [ ] Step 1: Enter plan mode
+- [ ] Step 2: Dream extraction (conversation)
+- [ ] Step 3: Propose agent roster (structured questions)
+- [ ] Step 4: Per-agent configuration (structured questions)
+- [ ] Step 5: Architecture confirmation + exit plan mode
+- [ ] Step 6: Implementation (post-approval)
 </progress>
 
-## Step 1: Detect Environment + Check for Repo
+## Step 1: Enter Plan Mode
 
-Detect shell and config file:
-
-```bash
-echo "SHELL=$SHELL"
+```
+EnterPlanMode
 ```
 
-Map shell to config:
-- `zsh` → `~/.zshrc`
-- `bash` → `~/.bashrc` (or `~/.bash_profile` on macOS if `.bashrc` doesn't exist)
-- `fish` → `~/.config/fish/config.fish`
-- Other → `~/.${shell}rc`
+## Step 2: Dream Extraction
 
-Check if we're inside the council repo (or can find it nearby):
-
-```bash
-# Check current directory
-if [ -f ".claude-plugin/plugin.json" ]; then
-  PLUGIN_DIR="$(pwd)"
-  echo "REPO_FOUND=true"
-  echo "PLUGIN_DIR=$PLUGIN_DIR"
-else
-  # Check common locations
-  for dir in \
-    "$HOME/git/octant-council-builder" \
-    "$HOME/octant-council-builder" \
-    "$HOME/projects/octant-council-builder" \
-    "$HOME/code/octant-council-builder" \
-    "$HOME/src/octant-council-builder" \
-    "$HOME/dev/octant-council-builder" \
-    "../octant-council-builder"; do
-    if [ -f "$dir/.claude-plugin/plugin.json" ]; then
-      PLUGIN_DIR="$(cd "$dir" && pwd)"
-      echo "REPO_FOUND=true"
-      echo "PLUGIN_DIR=$PLUGIN_DIR"
-      break
-    fi
-  done
-  if [ -z "$PLUGIN_DIR" ]; then
-    echo "REPO_FOUND=false"
-  fi
-fi
-```
-
-Store `$REPO_FOUND` and `$PLUGIN_DIR`.
-
-## Step 2: Explain Everything, Ask for Confirmation
-
-Before doing anything, tell the user exactly what will happen and why. The preview content depends on whether the repo was found.
+If `$ARGUMENTS` is empty, ask first:
 
 ```
 AskUserQuestion:
-  question: "Here's what setup will do. Ready to proceed?"
-  header: "Council Setup"
+  question: "What domain should this council evaluate?"
+  header: "Council Domain"
   options:
-    - label: "Let's go"
-      description: "Proceed with setup"
+    - label: "Public goods projects"
+      description: "General-purpose evaluation for funding decisions"
+    - label: "DeFi protocols"
+      description: "Evaluate DeFi projects on security, TVL, governance"
+    - label: "L2 rollups"
+      description: "Evaluate Layer 2 scaling solutions"
+    - label: "Research grants"
+      description: "Evaluate academic/applied research proposals"
+    - label: "Other"
+      description: "Describe your domain"
+```
+
+Store the answer as `$DOMAIN`. If "Other", use a follow-up text question.
+
+Invoke the conversation sub-skill:
+
+```
+<skill name="council:design-conversation" args="$DOMAIN" />
+```
+
+(If `$ARGUMENTS` was provided, use it directly as the args.)
+
+This runs a pure conversational dialogue — no structured questions, no tools. It returns a summary with:
+- **Domain** — what we're evaluating
+- **Purpose** — what decision this informs
+- **Data priorities** — top data sources
+- **Evaluation priorities** — the lenses that matter
+- **Skeptic focus** — domain-specific red flags
+- **Out of scope** — what the council won't assess
+- **Core essence** — the ONE non-negotiable
+
+Store these as context for the structured phase.
+
+## Step 3: Propose Agent Roster
+
+Based on the conversation, propose a default agent roster. First discover what already exists on disk, then present a proposed roster for approval.
+
+### Discover existing agents
+
+```
+Glob agents/data-*.md → existing data agents
+Glob agents/eval-*.md → existing eval agents
+Glob agents/synth-*.md → existing synth agents
+```
+
+Read each agent's frontmatter to get name + description. These are the "existing" agents — they already have definitions and don't need research/generation.
+
+### Q1: Data sources
+
+Present the proposed roster as a single confirmation. Include all existing data agents plus any domain-specific suggestions from the conversation:
+
+```
+AskUserQuestion:
+  question: "Here's the proposed data-gathering roster. Any changes?"
+  header: "Wave 1 — Data Gathering"
+  options:
+    - label: "Looks good"
+      description: "Keep this roster"
       preview: |
-        HOW PLUGINS WORK
-        Claude Code can load plugins from any directory via --plugin-dir.
-        It reads .claude-plugin/plugin.json from that directory and registers
-        all skills/*/SKILL.md files as slash commands under the plugin's name.
-
-        This repo is a plugin called "council" — loading it gives you
-        /council:evaluate, /council:design, /council:add-agent, and more.
-
-        [IF REPO NOT FOUND:]
-        STEP 1: CLONE THE REPO
-        The council repo wasn't found on your machine. We'll clone it from:
-        https://github.com/golemfoundation/octant-council-builder.git
-        You can pick where to put it (default: ~/git/octant-council-builder).
-
-        STEP 2: CREATE A SHELL ALIAS
-        Creates an alias so you can launch Claude Code with the council
-        plugin loaded. Example: alias council='claude --plugin-dir /path/to/repo'
-
-        The alias keeps things isolated — plain "claude" stays clean.
-        The council only loads when you use the alias.
-
-        STEP 3: ENABLE AGENT TEAMS
-        The council's evaluate skill uses Claude Code's teams feature to run
-        parallel agent waves. This requires an env var:
-        export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
-
-        Both shell config changes are tagged with "# public-goods-council"
-        so they can be cleanly removed or updated by re-running setup.
-
-        WHY THIS IS USEFUL FOR DEVELOPMENT
-        The alias points at your local clone. Edit agent .md files or skill
-        files and changes take effect immediately — no reinstall, no rebuild.
-        Run /reload-plugins inside a session to pick up skill changes without
-        restarting.
-    - label: "Cancel"
-      description: "Exit without changes"
+        Proposed data agents:
+        ├─ data-github: GitHub activity, contributors, maintenance (existing)
+        ├─ data-web: Website, docs, team, communications (existing)
+        ├─ data-funding: Funding history from Gitcoin/RetroPGF/etc (existing)
+        ├─ data-onchain: Contracts, TVL, users, on-chain metrics (existing)
+        [├─ data-{suggestion}: {description} (NEW — from conversation)]
+        └─ ...
+    - label: "Add an agent"
+      description: "I need a data source not listed here"
+    - label: "Remove an agent"
+      description: "Drop one of the listed agents"
 ```
 
-If "Cancel" → report "Setup cancelled. No changes made." and stop.
+If "Add" → ask: "What data source should this agent search? Give it a name (e.g., 'audits', 'discourse', 'l2beat')." Add to the roster, re-present Q1.
+If "Remove" → ask which one. Remove from roster, re-present Q1.
+If "Looks good" → store `$DATA_AGENTS` and proceed.
 
-## Step 3: Clone Repo (if needed)
+### Q2: Evaluation lenses
 
-Only runs if `$REPO_FOUND` is false.
+Same pattern — present existing eval agents plus conversation-driven suggestions:
 
 ```
 AskUserQuestion:
-  question: "Where should I clone the council repo?"
-  header: "Clone Location"
-  type: text
-  placeholder: "~/git/octant-council-builder"
-```
-
-Use the user's answer, or the default if left blank. Then clone:
-
-```bash
-git clone https://github.com/golemfoundation/octant-council-builder.git "$CLONE_DIR"
-```
-
-Set `$PLUGIN_DIR` to the absolute path of the clone.
-
-If clone fails, report the error and stop.
-
-## Step 4: Ask for Alias Name
-
-```
-AskUserQuestion:
-  question: "Pick a name for your council. You'll type this to launch Claude with the council loaded."
-  header: "Alias Name"
-  type: text
-  placeholder: "e.g. betty, hal, sage, oracle, ada"
-```
-
-Store as `$ALIAS_NAME`.
-
-### Validate
-
-- Non-empty
-- Alphanumeric + hyphens + underscores: `[a-zA-Z0-9_-]+`
-- No spaces
-
-If invalid, explain and re-ask.
-
-## Step 5: Validate Alias is Available
-
-```bash
-command -v $ALIAS_NAME 2>/dev/null; alias $ALIAS_NAME 2>/dev/null; echo "exit:$?"
-```
-
-If collision found:
-
-```
-AskUserQuestion:
-  question: "'$ALIAS_NAME' already exists as [command/alias]. Use it anyway?"
-  header: "Name Conflict"
+  question: "Here's the proposed evaluation roster. Any changes?"
+  header: "Wave 2 — Evaluation"
   options:
-    - label: "Use it anyway"
-      description: "Overwrite the existing alias"
-    - label: "Pick a different name"
-      description: "Go back and choose another name"
+    - label: "Looks good"
+      description: "Keep this roster"
+      preview: |
+        Proposed eval agents:
+        ├─ eval-technical: Code quality, maintenance, contributor health (existing)
+        ├─ eval-community: Users, governance, ecosystem integration (existing)
+        ├─ eval-financial: Funding diversity, sustainability, efficiency (existing)
+        ├─ eval-impact: Public goods properties, counterfactual impact (existing)
+        ├─ eval-skeptic: Red flags, gaming vectors, reasons NOT to fund (existing)
+        [├─ eval-{suggestion}: {description} (NEW — from conversation)]
+        └─ ...
+    - label: "Add an agent"
+      description: "I need an evaluation lens not listed here"
+    - label: "Remove an agent"
+      description: "Drop one of the listed agents"
 ```
 
-If "Pick a different name" → loop back to Step 4.
+Same add/remove/confirm loop. Store `$EVAL_AGENTS`.
 
-## Step 6: Write to Shell Config
+### Q3: Synthesis approach
 
-Build the lines to add. Two lines, both tagged:
-
-For zsh/bash:
 ```
-alias $ALIAS_NAME='claude --plugin-dir $PLUGIN_DIR'  # public-goods-council
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1  # public-goods-council
+AskUserQuestion:
+  question: "How should evaluations be synthesized into a final output?"
+  header: "Wave 3 — Synthesis"
+  options:
+    - label: "Single chair"
+      description: "One synthesizer produces a unified report with recommendation"
+      preview: |
+        Keeps: synth-chair (existing)
+        Creates: nothing new
+
+        The default approach. A single synth-chair agent reads all evaluations
+        and produces a score card, areas of agreement/disagreement, key risk,
+        and a FUND / FUND WITH CONDITIONS / DON'T FUND recommendation.
+    - label: "Debate format"
+      description: "Bull and bear synthesizers argue, then a chair decides"
+      preview: |
+        Keeps: synth-chair (existing — becomes the final arbiter)
+        Creates: synth-bull (NEW), synth-bear (NEW)
+
+        Three synth agents: synth-bull (strongest case FOR), synth-bear
+        (strongest case AGAINST), and synth-chair (weighs both arguments
+        and renders verdict). More nuanced but slower.
+
+        Wave 3 runs in two sub-waves:
+        3a: synth-bull + synth-bear (parallel) → write to council-out/$SLUG/synth/
+        3b: synth-chair reads both arguments + all evaluations → writes REPORT.md
+
+        NOTE: The generated synth-chair for debate format will self-sequence —
+        it polls TaskList for bull + bear completion before synthesizing.
+    - label: "Ranked comparison"
+      description: "Compare the evaluated project against alternatives"
+      preview: |
+        Removes: synth-chair (replaced)
+        Creates: synth-ranker (NEW)
+
+        A synth-ranker agent places the project in context of similar
+        projects in the domain. Useful when evaluating multiple projects
+        for a limited funding pool.
 ```
 
-For fish:
+Store selections as `$DATA_AGENTS`, `$EVAL_AGENTS`, `$SYNTH_APPROACH`.
+
+## Step 4: Per-Agent Configuration
+
+For each selected agent, ask targeted questions to configure dimensions and sources. Batch by wave.
+
+### Data agents (single batched AskUserQuestion)
+
+For each NEW data agent (not one already discovered on disk in Step 3):
+
 ```
-alias $ALIAS_NAME "claude --plugin-dir $PLUGIN_DIR"  # public-goods-council
-set -gx CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 1  # public-goods-council
+AskUserQuestion:
+  question: "What specific sources should data-[name] search?"
+  header: "Configure: data-[name]"
+  type: text
+  placeholder: "e.g., specific APIs, websites, databases, search queries"
 ```
 
-Before writing, remove any existing tagged lines:
+### Eval agents (single batched AskUserQuestion)
+
+For each NEW eval agent (not one already discovered on disk in Step 3):
+
+```
+AskUserQuestion:
+  question: "What 5 scoring dimensions should eval-[name] use?"
+  header: "Configure: eval-[name]"
+  type: text
+  placeholder: "e.g., 'Validator diversity, Token distribution, Upgrade mechanism, Governance participation, MEV resistance'"
+```
+
+For existing agents (discovered in Step 3), skip — their definitions are already written.
+
+### Synth agents (if non-default approach)
+
+If the user chose "Debate format" in Q3, three synth agents are needed: `synth-bull`, `synth-bear`, and `synth-chair`. The existing `synth-chair` can be kept as-is. For the new ones:
+
+```
+AskUserQuestion:
+  question: "For the debate format — what makes a strong case FOR funding in this domain?"
+  header: "Configure: synth-bull"
+  type: text
+  placeholder: "e.g., 'Emphasize growth metrics, community adoption, technical innovation, and ecosystem value'"
+```
+
+```
+AskUserQuestion:
+  question: "What makes a strong case AGAINST funding? What should the bear advocate focus on?"
+  header: "Configure: synth-bear"
+  type: text
+  placeholder: "e.g., 'Emphasize sustainability risks, competition, team concerns, and alternative allocation'"
+```
+
+If the user chose "Ranked comparison", one new agent is needed: `synth-ranker`. The existing `synth-chair` is replaced:
+
+```
+AskUserQuestion:
+  question: "What projects or benchmarks should the ranker compare against?"
+  header: "Configure: synth-ranker"
+  type: text
+  placeholder: "e.g., 'Compare against top 5 projects in the same category by TVL, users, and funding received'"
+```
+
+Note: "Ranked comparison" replaces synth-chair. Mark `synth-chair` for removal in the plan.
+
+## Step 5: Architecture Confirmation
+
+Present the complete plan for approval:
+
+```
+AskUserQuestion:
+  question: "Council design complete. Review and approve?"
+  header: "Council Design"
+  options:
+    - label: "Approve plan"
+      description: "Proceed to implementation"
+      preview: |
+        ┌─ COUNCIL DESIGN ────────────────────────┐
+        │ Domain: [domain from conversation]       │
+        │ Purpose: [purpose from conversation]     │
+        └──────────────────────────────────────────┘
+
+        Wave 1 — Data Gathering ([N] agents):
+        ├─ [name]: [what it fetches]
+        ├─ [name]: [what it fetches]
+        └─ ...
+
+        Wave 2 — Evaluation ([M] agents):
+        ├─ [name]: [lens] — [5 dimensions]
+        ├─ [name]: [lens] — [5 dimensions]
+        └─ ...
+
+        Wave 3 — Synthesis ([K] agents):
+        └─ [name]: [output format]
+
+        Implementation steps:
+        1. Research each NEW agent's domain ([P] agents to research)
+        2. Generate agent definitions from research ([P] agents to create)
+        3. Generate per-agent documentation ([P] new docs)
+        4. Update evaluate skill + README
+
+        Existing agents to keep: [list defaults being reused]
+        Existing agents to remove: [list defaults not selected]
+        New agents to create: [list new agents]
+
+        Estimated artifacts:
+        ├─ research/{name}.md × [P]
+        ├─ agents/{name}.md × [P new]
+        ├─ docs/{name}.md × [P new]
+        └─ Updated: README.md
+    - label: "Revise"
+      description: "Go back and change selections"
+    - label: "Cancel"
+      description: "Discard and exit"
+```
+
+If "Revise" → loop back to Step 3.
+If "Cancel" → ExitPlanMode, report "Council design cancelled."
+
+## Step 5 (continued): Exit Plan Mode
+
+After approval:
+
+```
+ExitPlanMode
+```
+
+The plan file is written automatically by plan mode. Present to the user:
+
+```
+Council design complete.
+
+Review the plan, then approve to begin implementation. Implementation will:
+1. Research [P] new agent domains (parallel)
+2. Generate [P] agent definitions (parallel)
+3. Generate [P] documentation pages (parallel)
+4. Remove [R] deselected agents
+5. Update README
+```
+
+## Step 6: Implementation (Post-Approval)
+
+**STOP HERE.** Do not proceed until the user explicitly approves (e.g., "approve", "go", "looks good", "implement it"). If the user wants changes, re-enter plan mode and revise. If the user says nothing related to approval, ask:
+
+```
+AskUserQuestion:
+  question: "Ready to implement the council design?"
+  header: "Implement"
+  options:
+    - label: "Implement now"
+      description: "Research, generate, and document all new agents"
+    - label: "Let me review first"
+      description: "I'll read the plan and get back to you"
+    - label: "Cancel"
+      description: "Discard the plan"
+```
+
+If "Let me review" → stop and wait for the user to come back.
+If "Cancel" → report "Council design cancelled."
+
+After the user approves, execute the plan:
+
+### 6a: Research wave (parallel)
+
+Use the plan content from the conversation context to find all agents with `Status: new`.
 
 ```bash
-grep -v '# public-goods-council' "$SHELL_CONFIG" > "$SHELL_CONFIG.tmp" && mv "$SHELL_CONFIG.tmp" "$SHELL_CONFIG"
+mkdir -p research
 ```
 
-Then append:
+For each NEW agent, spawn a research agent in the background:
+
+```
+Agent(
+  subagent_type="general-purpose",
+  run_in_background=true,
+  description="Research [agent-name]",
+  prompt="
+    You are researching the domain for a council agent.
+
+    Agent: [agent-name]
+    Purpose: [purpose from plan]
+    Research needed: [research brief from plan]
+
+    Research the domain using WebSearch and WebFetch:
+    - Best practices for [evaluating/gathering] [domain]
+    - Available data sources, APIs, scoring methodologies
+
+    Write findings to research/[agent-name].md with sections:
+    - Domain Context (2-3 paragraphs)
+    - Data Sources Found (with URLs, access methods)
+    - Methodology Notes
+    - Key Findings (bullets)
+    - Gaps (what couldn't be found)
+  "
+)
+```
+
+Spawn ALL research agents in a **single message** for parallelism. Wait for all to complete.
+
+### 6b: Generate wave (parallel)
+
+For each NEW agent, determine its template file from the prefix:
+- `data-*` → use `skills/generate-agent/templates/data.md`
+- `eval-*` → use `skills/generate-agent/templates/eval.md`
+- `synth-*` → use `skills/generate-agent/templates/synth.md`
+
+Spawn a generation agent for each:
+
+```
+Agent(
+  subagent_type="general-purpose",
+  run_in_background=true,
+  description="Generate [agent-name]",
+  prompt="
+    Generate the agent definition for [agent-name].
+
+    Read these files:
+    1. research/[agent-name].md — domain expertise from research
+    2. skills/generate-agent/templates/[data|eval|synth].md — use as structural template
+
+    Agent config from plan:
+    - Purpose: [purpose]
+    - Dimensions/Sources: [dimensions or sources]
+    - Status: new
+
+    Write the agent definition to agents/[agent-name].md following the
+    exact frontmatter + body pattern of the template:
+
+    Frontmatter must have: name, description, tools.
+    For eval agents, tools MUST include: Read, Write, Glob, WebSearch, WebFetch, SendMessage, TaskUpdate, TaskList
+    (evaluators need web access to independently verify claims — not just read data files).
+    For data agents, tools should match the template's tool list.
+    For synth agents, tools should match the template's tool list.
+
+    Body structure for data agents: title, role description, Input ($PROJECT, $OUTPUT_DIR),
+    Process (TaskUpdate claim → search/fetch → normalize → write → TaskUpdate complete →
+    SendMessage), Output Format (markdown template with tables), edge cases.
+
+    Body structure for eval agents: title, role description, Input ($PROJECT, $DATA_DIR,
+    $OUTPUT_DIR), Process (TaskUpdate claim → read data → **independently verify key claims
+    using WebSearch/WebFetch** → score dimensions with cited evidence → composite →
+    write → TaskUpdate complete → SendMessage), Scoring table, Output Format, Score calibration
+    (9-10 exceptional / 7-8 strong / 5-6 adequate / 3-4 weak / 1-2 critical).
+
+    CRITICAL — Objectivity requirements for eval agents:
+    - Every score MUST cite specific evidence, not impressions
+    - Agents MUST flag when data is missing or unverifiable rather than guessing
+    - Agents MUST note Goodhart risks: where the metric could be gamed
+    - Agents SHOULD independently verify data agent claims where possible
+    - The tools list MUST include WebSearch and WebFetch so evaluators can do
+      their own research — they should not be limited to reading data agent output
+
+    Body structure for synth agents: title, role description, Input ($PROJECT, $EVAL_DIR,
+    $OUTPUT_PATH), Process (TaskUpdate claim → read evals → extract scores → find
+    agreement/disagreement → synthesize → write → TaskUpdate complete → SendMessage),
+    Output Format, Decision criteria.
+  "
+)
+```
+
+Spawn ALL in a single message. Wait for all to complete.
+
+### 6c: Documentation wave (parallel)
+
+For each NEW agent, spawn a doc agent:
+
+```
+Agent(
+  subagent_type="general-purpose",
+  run_in_background=true,
+  description="Document [agent-name]",
+  prompt="
+    Generate documentation for agent [agent-name].
+
+    Read these files:
+    1. agents/[agent-name].md — the agent definition
+    2. research/[agent-name].md — domain context
+
+    Write docs/[agent-name].md covering:
+    - What this agent does (plain language)
+    - Data sources or scoring dimensions (with details)
+    - Output location and structure
+    - How to customize it
+    - Dependencies (what it reads from, what consumes its output)
+  "
+)
+```
+
+Spawn ALL in a single message. Wait for all to complete.
+
+### 6d: Remove deselected agents
+
+From the plan context, find agents marked for removal. For each:
 
 ```bash
-echo "" >> "$SHELL_CONFIG"
-echo "$ALIAS_LINE  # public-goods-council" >> "$SHELL_CONFIG"
-echo "$TEAMS_LINE  # public-goods-council" >> "$SHELL_CONFIG"
+rm agents/[agent-name].md
+rm docs/[agent-name].md  # if exists
 ```
 
-## Step 7: Report Success + Dev Tips
+### 6e: Update README
+
+Read `README.md` and update:
+- The architecture diagram (Wave 1/2/3 agent lists)
+- The agent discovery table
+- The fork ideas table
+
+### 6f: Report
 
 ```
-Setup complete. Added to [config file]:
+Council implementation complete.
 
-  [alias line]
-  [teams env var line]
+Created:
+├─ research/*.md — [P] research files
+├─ agents/*.md — [P] new agent definitions
+├─ docs/*.md — [P] documentation pages
+├─ Updated README.md
 
-Copy-paste this to get started right now:
+Removed:
+├─ [R] deselected default agents
 
-  source [config file] && cd $PLUGIN_DIR && $ALIAS_NAME
-
-Or step by step:
-
-  1. source [config file]        # load the alias + env var
-  2. cd $PLUGIN_DIR              # enter the council repo
-  3. $ALIAS_NAME                 # launch Claude with the council loaded
-
-Inside a session, try:
-  /council:evaluate Protocol Guild
-  /council:design DeFi protocols
-  /council:add-agent eval security
-
-
-HOW THE ALIAS WORKS
-
-The alias runs: claude --plugin-dir $PLUGIN_DIR
-
---plugin-dir tells Claude Code to load .claude-plugin/plugin.json from
-that directory, registering all skills/*/SKILL.md as slash commands
-under the "council" prefix. Plain "claude" stays clean.
-
-
-DEVELOPING YOUR COUNCIL
-
-The alias points at your local clone, so everything is live-editable:
-
-  Agents (agents/*.md)
-    Edit scoring dimensions, data sources, calibration tables.
-    Changes are read fresh each /council:evaluate — no restart needed.
-
-  Skills (skills/*/SKILL.md)
-    Edit skill definitions to change orchestration behavior.
-    Run /reload-plugins inside a session to pick up changes.
-
-  No build step. No compilation. It's all markdown.
-
-Once you've designed your own council, anyone else can install it too —
-just push your fork and share the repo URL. They clone it, run
-/council:setup, and they have your council as a plugin.
+Run `/council:evaluate <project>` to test your configured council.
 ```
+
+## Anti-Patterns
+
+- **Never skip the conversation** — structured questions alone miss domain nuance
+- **Never generate agents without research** — research makes the difference between generic and domain-specific
+- **Never spawn agents sequentially** — all agents in a wave go in a single message for parallelism
+- **Never modify existing agent definitions** — only create new ones and remove deselected ones

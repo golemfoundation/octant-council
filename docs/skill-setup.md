@@ -1,49 +1,57 @@
 # Skill: setup
 
 **Invocable:** Yes
-**Args:** None
-**Tools:** Bash, AskUserQuestion
+**Args:** `[domain]` (e.g. `"DeFi protocols"`, prompts if omitted)
+**Tools:** Read, Write, Glob, Bash, AskUserQuestion, Skill, EnterPlanMode, ExitPlanMode, Agent, WebSearch, WebFetch
 
 ## Purpose
 
-Installs the council plugin for hackathon participants. Adds a shell alias and enables the agent teams feature. Explains everything before making changes.
-
-## What It Does
-
-Before touching anything, the skill explains exactly what will change:
-
-1. **Shell alias** — so the user can launch `claude --plugin-dir <path>` with a short command
-2. **Teams env var** — `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`, required by the evaluate skill's parallel agent waves
-
-Both lines are tagged with `# public-goods-council` for clean removal/update.
+Design a custom evaluation council from scratch. Two phases: planning (conversation + structured questions → plan file) then implementation (research + generate + document agents).
 
 ## Process
 
-| Step | Action |
-|------|--------|
-| 1 | Detect shell (`$SHELL`), config file, plugin directory |
-| 2 | Explain both changes (alias + teams env var) and ask to proceed |
-| 3 | Ask for alias name (text input); validate: non-empty, alphanumeric + hyphens + underscores, no spaces |
-| 4 | Check alias availability; prompt to overwrite or pick a different name |
-| 5 | Remove any existing tagged lines, append new alias + env var |
-| 6 | Report: what was added, how to activate, what to try |
+| Step | Action | Phase |
+|------|--------|-------|
+| 1 | `EnterPlanMode` | Planning |
+| 2 | Domain selection. If no `$ARGUMENTS`: ask via `AskUserQuestion`. Invoke `council:design-conversation` with domain. Returns structured summary. | Planning |
+| 3 | Roster proposal. Glob existing agents. Present 3 questions: Wave 1 data agents, Wave 2 eval agents, Wave 3 synth approach. Add/remove loop per wave. | Planning |
+| 4 | Per-agent config. For each NEW agent: data → ask sources; eval → ask 5 dimensions; synth → ask methodology. Skip existing agents. | Planning |
+| 5 | Architecture confirmation + `ExitPlanMode`. Full preview with approve/revise/cancel. Plan written natively by plan mode. Wait for explicit user approval before proceeding. | Gate |
+| 6a | Research wave — spawn background agent per NEW agent. All in single message. Write to `research/{name}.md` | Implementation |
+| 6b | Generate wave — spawn background agent per NEW agent. Read plan + research + template. Write to `agents/{name}.md` | Implementation |
+| 6c | Doc wave — spawn background agent per NEW agent. Write to `docs/{name}.md` | Implementation |
+| 6d | Delete deselected agents from `agents/` and `docs/` | Implementation |
+| 6e | Update `README.md` (architecture diagram, agent discovery table, fork ideas table) | Implementation |
+| 6f | Report created/removed/updated files | Implementation |
 
-## Lines Added to Shell Config
+## Sub-skills
 
-```bash
-# zsh/bash
-alias council='claude --plugin-dir "/path/to/repo"'  # public-goods-council
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1  # public-goods-council
+| Skill | Step | Purpose |
+|-------|------|---------|
+| `council:design-conversation` | 2 | Conversational domain discovery. Returns: domain, purpose, data priorities, eval priorities, skeptic focus, boundaries, core essence. |
 
-# fish
-alias council "claude --plugin-dir '/path/to/repo'"  # public-goods-council
-set -gx CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS 1  # public-goods-council
-```
+## Template Selection (Step 6b)
 
-## Re-run Safety
+| New agent prefix | Template |
+|------------------|----------|
+| `data-*` | `skills/generate-agent/templates/data.md` |
+| `eval-*` | `skills/generate-agent/templates/eval.md` |
+| `synth-*` | `skills/generate-agent/templates/synth.md` |
 
-Tagged with `# public-goods-council`. Re-running removes old lines before writing new ones.
+## Outputs
 
-## Why Teams?
+| File | Description |
+|------|-------------|
+| native plan file | Structured plan with roster, config, implementation sequence |
+| `research/{name}.md` | Domain research per new agent |
+| `agents/{name}.md` | Agent definition per new agent |
+| `docs/{name}.md` | Documentation per new agent |
 
-The `council:evaluate` skill uses `TeamCreate` to coordinate parallel agent waves. Without `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`, the TeamCreate tool is unavailable and evaluation will fail.
+## Constraints
+
+- Never skip conversation — structured questions alone miss domain nuance
+- Never generate without research — research makes agents domain-specific
+- Never spawn agents sequentially — all in single message per wave
+- Never modify existing agent definitions — only create new, remove deselected
+- Never write plan outside plan mode
+- Plan approval is a hard gate — implementation does not auto-start

@@ -1,6 +1,6 @@
 # Skill: generate-agent
 
-**Invocable:** No (called by `council:design` and `council:add-agent`)
+**Invocable:** No (called by `council:setup` and `council:add-agent`)
 **Context:** Fork
 **Model:** Sonnet
 **Args:** `$ARGUMENTS` — agent name (e.g. `eval-governance`, `data-audits`, `synth-debate`)

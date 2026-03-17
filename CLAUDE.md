@@ -12,13 +12,13 @@ This is a council builder — a tool that generates multi-agent evaluation counc
 2. **Wave 2 — Eval**: independent evaluators score the project from different lenses — they never see each other's scores
 3. **Wave 3 — Synthesis**: a synthesis agent combines everything into a final report — it can talk back to evaluators via team tools to ask clarifying questions, challenge scores, or request deeper analysis before writing the final output
 
-The repo ships with default scaffold agents for Ethereum/Octant public goods, but they're a starting point — not a finished product. **The whole point is that you run `/council:design` and reshape it into your own council.** Every time you run `/council:design`, `/council:add-agent`, or `/council:remove-agent`, you're changing which agents exist and what they evaluate. The council you end up with is yours.
+The repo ships with default scaffold agents for Ethereum/Octant public goods, but they're a starting point — not a finished product. **The whole point is that you run `/council:setup` and reshape it into your own council.** Every time you run `/council:setup`, `/council:add-agent`, or `/council:remove-agent`, you're changing which agents exist and what they evaluate. The council you end up with is yours.
 
 ### Get started
 
-1. Run setup (one time — this enables Claude teams, which the plugin needs for inter-agent communication):
+1. Run settings (one time — this enables Claude teams, which the plugin needs for inter-agent communication):
    ```
-   /council:setup
+   /council:settings
    ```
 
 2. Try the default scaffold on a real project to see the pattern:
@@ -30,9 +30,9 @@ The repo ships with default scaffold agents for Ethereum/Octant public goods, bu
 
    **Redesign the whole council** for a different domain:
    ```
-   /council:design DeFi lending protocols
-   /council:design climate impact DAOs
-   /council:design developer tooling grants
+   /council:setup DeFi lending protocols
+   /council:setup climate impact DAOs
+   /council:setup developer tooling grants
    ```
 
    **Add or remove individual agents** to tune what gets evaluated:
@@ -53,7 +53,7 @@ Then ask the user: "Want to try `/council:evaluate Aave DAO` to see the scaffold
 
 ## Overview
 
-Claude Code plugin that generates multi-agent evaluation councils. Ships with scaffold agents for public goods — run `/council:design` to make it yours. Three-wave pattern: data → evaluation → synthesis.
+Claude Code plugin that generates multi-agent evaluation councils. Ships with scaffold agents for public goods — run `/council:setup` to make it yours. Three-wave pattern: data → evaluation → synthesis.
 
 ## Plugin Structure
 
@@ -69,8 +69,8 @@ council-out/  Runtime evaluation output (created by evaluate skill)
 
 | Skill | Invocable | Purpose |
 |-------|-----------|---------|
-| `council:setup` | Yes | Install the council plugin — shell alias + teams feature + permissions |
-| `council:design` | Yes | Design your evaluation council — domain, agents, lenses, data sources |
+| `council:settings` | Yes | Install the council plugin — shell alias + teams feature + permissions |
+| `council:setup` | Yes | Design your evaluation council — domain, agents, lenses, data sources |
 | `council:evaluate` | Yes | Evaluate a public goods project using a multi-agent council |
 | `council:add-agent` | Yes | Add a new agent to the evaluation council |
 | `council:remove-agent` | Yes | Remove an agent from the evaluation council |
@@ -86,13 +86,13 @@ Skills use `$TOKEN` placeholders that expand from runtime context. These are not
 
 | Token | Set by | Meaning |
 |-------|--------|---------|
-| `$ARGUMENTS` | Skill framework | Raw arguments passed after the skill name (e.g., `DeFi protocols` in `/council:design DeFi protocols`) |
+| `$ARGUMENTS` | Skill framework | Raw arguments passed after the skill name (e.g., `DeFi protocols` in `/council:setup DeFi protocols`) |
 | `$PROJECT` | `evaluate` Step 1 | Project name or URL being evaluated |
 | `$SLUG` | `evaluate` Step 1 | URL-safe slug derived from `$PROJECT` (lowercase, hyphens, max 40 chars) |
-| `$DOMAIN` | `design` Step 2 | Evaluation domain from user input or conversation |
-| `$DATA_AGENTS` | `design` Step 3 / `evaluate` Step 1 | List of data-* agent files discovered or selected |
-| `$EVAL_AGENTS` | `design` Step 3 / `evaluate` Step 1 | List of eval-* agent files discovered or selected |
-| `$SYNTH_APPROACH` | `design` Step 3 | Selected synthesis format (single chair / debate / ranked) |
+| `$DOMAIN` | `setup` Step 2 | Evaluation domain from user input or conversation |
+| `$DATA_AGENTS` | `setup` Step 3 / `evaluate` Step 1 | List of data-* agent files discovered or selected |
+| `$EVAL_AGENTS` | `setup` Step 3 / `evaluate` Step 1 | List of eval-* agent files discovered or selected |
+| `$SYNTH_APPROACH` | `setup` Step 3 | Selected synthesis format (single chair / debate / ranked) |
 | `$WAVE` | `add-agent` Step 1 | Agent wave type: `data`, `eval`, or `synth` |
 | `$NAME` | `add-agent` Step 2 | Agent short name (e.g., `governance`, `audits`) |
 | `$DESCRIPTION` | `add-agent` Step 2 | One-line agent description from conversation |

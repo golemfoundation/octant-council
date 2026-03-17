@@ -1,6 +1,6 @@
 # Council Builder
 
-A Claude Code plugin that **generates multi-agent evaluation councils**. It is not a council — it's a tool for building one. The default agents ship as a starting point for the [Octant hackathon](https://synthesis.md/hack/#octant), but they're scaffolding, not a finished product. Your job is to run `/council:design`, reshape the agents, and make something that actually evaluates well for your domain.
+A Claude Code plugin that **generates multi-agent evaluation councils**. It is not a council — it's a tool for building one. The default agents ship as a starting point for the [Octant hackathon](https://synthesis.md/hack/#octant), but they're scaffolding, not a finished product. Your job is to run `/council:setup`, reshape the agents, and make something that actually evaluates well for your domain.
 
 Out of the box this does nothing useful. It needs your TLC to become a real evaluation tool.
 
@@ -22,26 +22,26 @@ Evaluators never see each other's scores. That's the point — independence prev
 ## Get started
 
 ```bash
-# 1. Setup (one time — enables Claude teams + creates shell alias)
-/council:setup
+# 1. Settings (one time — enables Claude teams + creates shell alias)
+/council:settings
 
 # 2. Try the default scaffold on a real project to see the pattern
 /council:evaluate Aave DAO
 
 # 3. Now make it yours — this is the real step
-/council:design DeFi lending protocols
-/council:design climate impact DAOs
-/council:design developer tooling grants
+/council:setup DeFi lending protocols
+/council:setup climate impact DAOs
+/council:setup developer tooling grants
 ```
 
-Step 3 is where the work happens. `/council:design` runs a conversation to understand your domain, proposes an agent roster, researches each agent's domain, and generates the definitions. The council you end up with is yours.
+Step 3 is where the work happens. `/council:setup` runs a conversation to understand your domain, proposes an agent roster, researches each agent's domain, and generates the definitions. The council you end up with is yours.
 
 ## Skills
 
 | Skill | Purpose |
 |-------|---------|
-| `/council:setup` | Install shell alias for this plugin |
-| `/council:design [domain]` | **Design your council** — conversation → roster → research → generate |
+| `/council:settings` | Install shell alias for this plugin |
+| `/council:setup [domain]` | **Design your council** — conversation → roster → research → generate |
 | `/council:evaluate <project>` | Run the council on a project |
 | `/council:add-agent` | Add a single agent via conversation → research → generate |
 | `/council:remove-agent` | Remove an agent with impact preview |
@@ -50,7 +50,7 @@ Step 3 is where the work happens. `/council:design` runs a conversation to under
 
 **Everything.** The plugin is a council *factory*, not a council.
 
-- **`/council:design`** — redesign the entire council for a new domain. New agents, new dimensions, new data sources.
+- **`/council:setup`** — redesign the entire council for a new domain. New agents, new dimensions, new data sources.
 - **`/council:add-agent`** / **`/council:remove-agent`** — tune the roster one agent at a time.
 - **Edit agents directly** — every agent is a markdown file in `agents/`. Change scoring dimensions, data sources, calibration. The orchestrator discovers agents by filename prefix, no config to update.
 - **Change the output** — modify agent templates to produce JSON, comparison matrices, grant proposals, whatever.
@@ -82,11 +82,11 @@ council-out/{slug}/
 | Debate | `synth-bull` + `synth-bear` + `synth-chair` | Bull argues FOR, bear AGAINST, chair decides |
 | Ranked | `synth-ranker` (replaces chair) | Compares project against alternatives |
 
-Configure via `/council:design`.
+Configure via `/council:setup`.
 
 ## Sharing your council
 
-This is a Claude Code plugin — a repo with `.claude-plugin/plugin.json` and some markdown files. Once you design your own council via `/council:design`, anyone can install it:
+This is a Claude Code plugin — a repo with `.claude-plugin/plugin.json` and some markdown files. Once you design your own council via `/council:setup`, anyone can install it:
 
 1. Push your fork
 2. Share the repo URL

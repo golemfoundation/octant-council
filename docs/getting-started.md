@@ -8,10 +8,10 @@
 ## Install
 
 ```
-/council:setup
+/council:settings
 ```
 
-The setup skill:
+The settings skill:
 1. Detects your shell (zsh/bash/fish)
 2. Explains what will change and asks for confirmation
 3. Asks you to pick an alias name
@@ -36,7 +36,7 @@ Output: `council-out/aave-dao/REPORT.md`
 ## Design a Custom Council
 
 ```
-/council:design DeFi protocols
+/council:setup DeFi protocols
 ```
 
 Two phases:

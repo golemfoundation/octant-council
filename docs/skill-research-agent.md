@@ -1,6 +1,6 @@
 # Skill: research-agent
 
-**Invocable:** No (called by `council:design` and `council:add-agent`)
+**Invocable:** No (called by `council:setup` and `council:add-agent`)
 **Context:** Fork
 **Args:** `<agent-name>` (e.g. `data-audits`, `eval-governance`)
 **Tools:** Read, Write, Glob, WebSearch, WebFetch
