@@ -1,5 +1,4 @@
 ---
-name: research-agent
 description: Research domain expertise for a council agent before generating its definition
 argument-hint: <agent-name>
 allowed-tools:

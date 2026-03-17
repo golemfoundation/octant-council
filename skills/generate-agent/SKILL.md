@@ -1,5 +1,4 @@
 ---
-name: generate-agent
 description: Generate an agent definition from research findings and council plan
 argument-hint: <agent-name>
 allowed-tools:
@@ -30,15 +29,19 @@ Read research/$ARGUMENTS.md  → domain expertise
 
 ### Step 2: Read a template
 
-Determine the agent type from prefix and read a matching existing agent as template:
+Determine the agent type from prefix and read the template:
 
 ```
-data-* → Read agents/data-github.md   (data agent template)
-eval-* → Read agents/eval-technical.md (eval agent template)
-synth-* → Read agents/synth-chair.md  (synth agent template)
+data-* → Read skills/generate-agent/templates/data.md
+eval-* → Read skills/generate-agent/templates/eval.md
+synth-* → Read skills/generate-agent/templates/synth.md
 ```
 
-If no agents of that type exist yet (all were removed during customization), use this minimal structure:
+Templates use UPPER_CASE placeholders (NAME, DESCRIPTION, DIMENSION_1, etc.) that the generator fills in from the plan and research.
+
+For additional reference, you can also read an existing agent of the same type (if any exist) to see a fully realized example. But always use the template as the structural skeleton.
+
+The templates already encode the full structure. For reference, here are the minimal fallbacks if templates are somehow missing:
 
 **Data agent minimal template:**
 ```markdown
@@ -142,12 +145,12 @@ You receive `$PROJECT`, `$EVAL_DIR` (directory containing all Wave 2 evaluations
 
 Write `agents/$ARGUMENTS.md` following the template's exact pattern:
 
-**Frontmatter** — match the template's frontmatter fields:
+**Frontmatter** — use the template's tool list, replacing UPPER_CASE placeholders:
 ```yaml
 ---
 name: $ARGUMENTS
-description: [from COUNCIL-PLAN.md]
-tools: [match template's tool list for same wave type]
+description: [from plan context]
+tools: [copy tool list from template for this wave type]
 ---
 ```
 

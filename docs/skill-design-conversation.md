@@ -2,7 +2,7 @@
 
 **Invocable:** No (called by `council:design`)
 **Args:** `[domain]` (e.g. `"DeFi protocols"`)
-**Tools:** Read, Write
+**Tools:** Read
 
 ## Purpose
 
@@ -10,7 +10,7 @@ Pure conversational dialogue to extract the user's vision for an evaluation coun
 
 ## Stop Conditions
 
-Conversation ends when all 7 can be answered:
+Conversation ends when all 9 can be answered:
 
 | # | Question |
 |---|----------|
@@ -18,9 +18,11 @@ Conversation ends when all 7 can be answered:
 | 2 | What decision does this council inform? |
 | 3 | What data sources can be fetched and measured? |
 | 4 | What evaluation lenses define "good" in this domain? |
-| 5 | What are the domain-specific red flags? |
-| 6 | What is out of scope? |
-| 7 | What is the ONE non-negotiable criterion? |
+| 5 | Are dimensions falsifiable? (could two independent evaluators agree on each score?) |
+| 6 | What are the Goodhart risks? (which metrics can be gamed, and how to counter that?) |
+| 7 | What are the domain-specific red flags? |
+| 8 | What is out of scope? |
+| 9 | What is the ONE non-negotiable criterion? |
 
 ## Exit Summary
 
@@ -29,6 +31,8 @@ Conversation ends when all 7 can be answered:
 **Purpose:** ...
 **Data priorities:** ...
 **Evaluation priorities:** ...
+**Evidence standards:** ...
+**Goodhart risks:** ...
 **Skeptic focus:** ...
 **Out of scope:** ...
 **Core essence:** ...
@@ -41,3 +45,6 @@ Conversation ends when all 7 can be answered:
 - Single-word answers get pushed back
 - No premature agent design
 - No structured questions — pure conversation
+- Push relentlessly for objectivity — every dimension must be falsifiable and evidence-based, not vibes
+- Probe for Goodhart's Law vulnerabilities: for every proposed metric, ask "How would a project game this?"
+- Push for depth over breadth — fewer dimensions scored rigorously beats many scored superficially

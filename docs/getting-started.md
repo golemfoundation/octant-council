@@ -13,10 +13,13 @@
 
 The setup skill:
 1. Detects your shell (zsh/bash/fish)
-2. Asks you to pick an alias name
-3. Checks the name isn't taken
-4. Adds the alias to your shell config
-5. Tells you to `source` your config
+2. Explains what will change and asks for confirmation
+3. Asks you to pick an alias name
+4. Checks the name isn't taken
+5. Writes two lines to your shell config:
+   - A shell alias so you can launch with the council plugin loaded from any directory
+   - `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` — required for parallel wave execution
+6. Tells you to `source` your config
 
 After setup, launch from anywhere with your alias.
 
@@ -25,10 +28,10 @@ After setup, launch from anywhere with your alias.
 Evaluate a project with the default council (4 data + 5 eval + 1 synth = 10 agents):
 
 ```
-/council:evaluate Protocol Guild
+/council:evaluate Aave DAO
 ```
 
-Output: `council-out/protocol-guild/REPORT.md`
+Output: `council-out/aave-dao/REPORT.md`
 
 ## Design a Custom Council
 

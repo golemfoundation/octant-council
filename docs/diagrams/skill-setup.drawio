@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="cli-anything" agent="cli-anything-drawio/1.0.0" version="24.0.0">
+  <diagram id="diagram_1773727164120954" name="Page-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="800" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v_1773727167562564" value="Start" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1a1a2e;strokeColor=#1a1a2e;fontColor=#ffffff;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="330.0" y="30.0" width="140.0" height="40.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727170578210" value="Step 1: Detect Environment&lt;br&gt;&lt;i&gt;Resolve /bin/zsh, config path, plugin dir&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="280.0" y="100.0" width="240.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727173940303" value="Step 2: Explain Changes&lt;br&gt;&lt;i&gt;Shell alias + AGENT_TEAMS=1 env var&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="280.0" y="200.0" width="240.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727177313559" value="Proceed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="340.0" y="295.0" width="120.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727181474951" value="Cancelled&lt;br&gt;&lt;i&gt;No changes made&lt;/i&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="580.0" y="295.0" width="140.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727185246404" value="Step 3: Choose Alias&lt;br&gt;&lt;i&gt;Text input, alphanumeric + _ + -&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="280.0" y="385.0" width="240.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727193861863" value="Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="340.0" y="480.0" width="120.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727198411581" value="Step 4: Check Availability&lt;br&gt;&lt;i&gt;command -v, alias lookup&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="280.0" y="570.0" width="240.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727202754361" value="Available?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="340.0" y="665.0" width="120.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727206663599" value="Overwrite?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="560.0" y="665.0" width="120.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727210136639" value="Step 5: Write Config&lt;br&gt;&lt;i&gt;Remove old tags, append alias + env var&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="280.0" y="760.0" width="240.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727215417091" value="Step 6: Report Success&lt;br&gt;&lt;i&gt;Show added lines, source command, next steps&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="280.0" y="860.0" width="240.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727218193790" value="Done" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;fontSize=12;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="330.0" y="960.0" width="140.0" height="40.0" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727239134595" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727167562564" target="v_1773727170578210">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727249274685" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727170578210" target="v_1773727173940303">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727252073759" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727173940303" target="v_1773727177313559">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727255391213" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#b85450;strokeWidth=2;" edge="1" parent="1" source="v_1773727177313559" target="v_1773727181474951">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727259263755" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727177313559" target="v_1773727185246404">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727269709358" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727185246404" target="v_1773727193861863">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727274590515" value="Invalid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="v_1773727193861863" target="v_1773727185246404">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727281239281" value="Valid" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727193861863" target="v_1773727198411581">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727284007025" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727198411581" target="v_1773727202754361">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727288875437" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727202754361" target="v_1773727210136639">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727292359258" value="Taken" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#d6b656;strokeWidth=2;" edge="1" parent="1" source="v_1773727202754361" target="v_1773727206663599">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727296993996" value="Use anyway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="v_1773727206663599" target="v_1773727210136639">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727302684078" value="Pick different" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;strokeColor=#6c8ebf;strokeWidth=1.5;" edge="1" parent="1" source="v_1773727206663599" target="v_1773727185246404">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727306255724" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727210136639" target="v_1773727215417091">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727306315552" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;strokeColor=#555555;" edge="1" parent="1" source="v_1773727215417091" target="v_1773727218193790">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727362868516" value="&lt;b style=&quot;font-size:16px&quot;&gt;council:setup — Process Flow&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="200.0" y="5.0" width="400.0" height="25.0" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

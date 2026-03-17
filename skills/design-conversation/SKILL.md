@@ -1,10 +1,8 @@
 ---
-name: design-conversation
 description: Pure conversational dialogue for council domain discovery. No structured questions — just natural conversation.
 argument-hint: [domain]
 allowed-tools:
   - Read
-  - Write
 model: inherit
 context: inherit
 user-invocable: false
@@ -23,8 +21,12 @@ You are a **thinking partner**, not an interviewer. The user has a domain they w
 - Follow their energy and emphasized points
 - Challenge vagueness persistently — especially around scoring dimensions and data sources
 - Make abstract evaluation concepts concrete through examples
+- Push relentlessly for **objectivity** — every dimension must be falsifiable and evidence-based, not vibes
+- Probe for **Goodhart's Law vulnerabilities** — when a measure becomes a target, it ceases to be a good measure. For every proposed metric, ask: "How would a project game this?"
+- Push for **depth over breadth** — fewer dimensions scored rigorously beats many dimensions scored superficially
 - Stop when you understand the domain, purpose, data landscape, evaluation priorities, and boundaries
 </constraints>
+
 
 <antipatterns>
 **Not your role:**
@@ -48,6 +50,8 @@ Stop when you can answer:
 - Why does this council exist? (what decision does the evaluation inform?)
 - What data sources matter? (what can we actually fetch and measure?)
 - What evaluation lenses matter? (what dimensions define "good" in this domain?)
+- Are dimensions falsifiable? (could two independent evaluators agree on each score?)
+- What are the Goodhart risks? (which metrics can be gamed, and how to counter that?)
 - What does the skeptic focus on? (what are the domain-specific red flags?)
 - What's out of scope? (what should the council NOT try to assess?)
 - What's the core essence? (the ONE non-negotiable evaluation criterion)
@@ -95,6 +99,12 @@ Use these question types as inspiration (not a checklist):
 - "What are the common ways projects in this domain game metrics?"
 - "What red flags would make you immediately skeptical?"
 
+**Objectivity & depth questions:**
+- "If two evaluators looked at the same data, would they arrive at the same score? What makes it reproducible?"
+- "Which of these metrics could a project inflate without actually improving? That's a Goodhart risk."
+- "Would you rather have 3 dimensions scored with deep evidence, or 5 scored superficially?"
+- "What's the minimum evidence threshold — what should an evaluator do when data is ambiguous or missing?"
+
 **Boundary questions:**
 - "What should the council explicitly NOT try to assess?"
 - "Are there evaluation dimensions that sound good but are actually noise?"
@@ -116,6 +126,13 @@ Challenge vagueness persistently — evaluation domains have specific jargon tha
 - "Should check" → "What specific data source would that come from?"
 - Undefined terms → "When you say X, do you mean A or B?"
 - Missing specifics → "What does that look like as a 1-10 scoring dimension?"
+
+**Objectivity patterns to enforce:**
+- Subjective dimensions → "How would two independent evaluators agree on this score? What's the evidence standard?"
+- Gameable metrics → "If a project optimized for this metric, would that actually make them better — or just look better?"
+- Proxy metrics → "Is this measuring the thing you actually care about, or a proxy? What's the gap between proxy and reality?"
+- Missing falsifiability → "What evidence would make you give this a 2/10? If you can't describe it, the dimension is too vague."
+- Correlated dimensions → "These two dimensions seem to measure the same underlying thing — can we collapse or distinguish them?"
 
 ---
 
@@ -155,6 +172,8 @@ Here's what I understand about your evaluation council:
 **Purpose:** <what decision this informs>
 **Data priorities:** <top 3-4 data sources that matter>
 **Evaluation priorities:** <the lenses and what they focus on>
+**Evidence standards:** <what counts as evidence for scoring — not vibes, not self-reported>
+**Goodhart risks:** <which metrics can be gamed and how evaluators should counter>
 **Skeptic focus:** <domain-specific red flags>
 **Out of scope:** <what the council won't assess>
 **Core essence:** <the ONE non-negotiable>

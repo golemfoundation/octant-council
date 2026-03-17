@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="cli-anything" agent="cli-anything-drawio/1.0.0" version="24.0.0">
+  <diagram id="diagram_1773727149713945" name="Page-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v_1773727154076447" value="&lt;b style=&quot;font-size:18px&quot;&gt;council:add-agent — Skill Process Flow&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="500.0" y="24.0" width="700.0" height="30.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727165631013" value="&lt;b&gt;Step 1: Discover Roster&lt;/b&gt;&lt;br&gt;Glob agents/data-*.md, eval-*.md, synth-*.md&lt;br&gt;Display roster grouped by wave" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="70.0" width="380.0" height="70.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727168707957" value="$ARGUMENTS has wave?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="210.0" y="185.0" width="180.0" height="60.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727174274876" value="Parse $ARGUMENTS&lt;br&gt;Store $WAVE (and $NAME if present)&lt;br&gt;Skip wave selection" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="530.0" y="183.0" width="260.0" height="65.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727174332597" value="AskUserQuestion:&lt;br&gt;Select wave type (data / eval / synth)&lt;br&gt;Show current agents per wave as preview&lt;br&gt;Store as $WAVE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="290.0" width="380.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727179829193" value="&lt;b&gt;Step 2: Design Conversation&lt;/b&gt;&lt;br&gt;Invoke council:design-agent-conversation&lt;br&gt;with $WAVE and $NAME (if known)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="415.0" width="380.0" height="70.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727179889167" value="Sub-skill:&lt;br&gt;&lt;b&gt;council:design-agent-conversation&lt;/b&gt;&lt;br&gt;Extracts: $NAME, $DESCRIPTION,&lt;br&gt;$PURPOSE, $SOURCES/$DIMENSIONS,&lt;br&gt;$RESEARCH_NEEDED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="530.0" y="405.0" width="260.0" height="90.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727185575755" value="&lt;b&gt;Step 3: Research Domain&lt;/b&gt;&lt;br&gt;mkdir -p research&lt;br&gt;Spawn research sub-agent (background)&lt;br&gt;Wait for completion" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="545.0" width="380.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727185646685" value="Sub-agent: Research&lt;br&gt;WebSearch + WebFetch&lt;br&gt;Writes research/$WAVE-$NAME.md&lt;br&gt;(domain context, sources, methodology)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="530.0" y="545.0" width="260.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727190044933" value="&lt;b&gt;Step 4: Generate Agent Definition&lt;/b&gt;&lt;br&gt;Resolve template (data.md / eval.md / synth.md)&lt;br&gt;Spawn generate sub-agent&lt;br&gt;Wait for completion" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="675.0" width="380.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727190103546" value="Sub-agent: Generate&lt;br&gt;Reads template + research&lt;br&gt;Writes agents/$WAVE-$NAME.md&lt;br&gt;(frontmatter + body from template)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="530.0" y="675.0" width="260.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727193794036" value="&lt;b&gt;Step 5: Generate Documentation&lt;/b&gt;&lt;br&gt;Spawn doc sub-agent&lt;br&gt;Wait for completion" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="805.0" width="380.0" height="65.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727193864049" value="Sub-agent: Document&lt;br&gt;Reads agent + research&lt;br&gt;Writes docs/$WAVE-$NAME.md&lt;br&gt;(usage, customization, deps)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="530.0" y="800.0" width="260.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727198625695" value="&lt;b&gt;Step 6: Finalize&lt;/b&gt;&lt;br&gt;Update README.md roster diagram&lt;br&gt;Display created files summary&lt;br&gt;Suggest next step: /council:evaluate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="925.0" width="380.0" height="75.0" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727231318213" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727165631013" target="v_1773727168707957">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727231377840" value="yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="1" source="v_1773727168707957" target="v_1773727174274876">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727231436385" value="no" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727168707957" target="v_1773727174332597">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727235576884" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#82b366;dashed=1;" edge="1" parent="1" source="v_1773727174274876" target="v_1773727179829193">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727235643340" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727174332597" target="v_1773727179829193">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727242683711" value="invoke" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#9673a6;strokeWidth=1;" edge="1" parent="1" source="v_1773727179829193" target="v_1773727179889167">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727242742339" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727179829193" target="v_1773727185575755">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727242800506" value="spawn" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#9673a6;strokeWidth=1;" edge="1" parent="1" source="v_1773727185575755" target="v_1773727185646685">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727242858380" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727185575755" target="v_1773727190044933">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727242917497" value="spawn" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#9673a6;strokeWidth=1;" edge="1" parent="1" source="v_1773727190044933" target="v_1773727190103546">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727242978535" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727190044933" target="v_1773727193794036">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727243040223" value="spawn" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;strokeColor=#9673a6;strokeWidth=1;" edge="1" parent="1" source="v_1773727193794036" target="v_1773727193864049">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727243100559" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="v_1773727193794036" target="v_1773727198625695">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727262401038" value="&lt;b&gt;Legend&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="1050.0" width="80.0" height="20.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727262459438" value="Step" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="110.0" y="1075.0" width="80.0" height="28.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727267883340" value="Decision" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="220.0" y="1072.0" width="90.0" height="34.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727272029442" value="Sub-skill" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="340.0" y="1075.0" width="90.0" height="28.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727275646964" value="Sub-agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="460.0" y="1075.0" width="90.0" height="28.0" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

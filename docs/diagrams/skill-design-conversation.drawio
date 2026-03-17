@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="cli-anything" agent="cli-anything-drawio/1.0.0" version="24.0.0">
+  <diagram id="diagram_1773727182632662" name="Page-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v_1773727186894437" value="&lt;b style=&quot;font-size:18px&quot;&gt;council:design-conversation&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="200.0" y="20.0" width="500.0" height="40.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727190285024" value="&lt;i style=&quot;font-size:12px;color:#666666&quot;&gt;Conversational domain discovery loop — not a linear pipeline&lt;/i&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="200.0" y="55.0" width="500.0" height="25.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727194840149" value="&lt;b&gt;START&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="350.0" y="100.0" width="200.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727198709626" value="&lt;b&gt;$ARGUMENTS&lt;br&gt;provided?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="325.0" y="200.0" width="250.0" height="80.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727202371810" value="&lt;b&gt;Open Conversation&lt;/b&gt;&lt;br&gt;Frame the domain; ask what&lt;br&gt;ideal output looks like" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="325.0" y="340.0" width="250.0" height="70.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727205878345" value="&lt;b&gt;Ask for Domain&lt;/b&gt;&lt;br&gt;Prompt for evaluation&lt;br&gt;domain (specific niche)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="660.0" y="210.0" width="200.0" height="70.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727210238593" value="&lt;b&gt;Conversation Loop&lt;/b&gt;&lt;br&gt;Follow user energy&lt;br&gt;Probe depth over breadth&lt;br&gt;Challenge vagueness&lt;br&gt;Enforce falsifiability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="300.0" y="480.0" width="300.0" height="110.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727215345318" value="&lt;b&gt;All 9 stop&lt;br&gt;conditions met?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="300.0" y="660.0" width="300.0" height="90.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727220043998" value="&lt;b&gt;9 Stop Conditions&lt;/b&gt;&lt;br&gt;1. What domain?&lt;br&gt;2. What decision informed?&lt;br&gt;3. What data sources?&lt;br&gt;4. What eval lenses?&lt;br&gt;5. Are dimensions falsifiable?&lt;br&gt;6. Goodhart risks?&lt;br&gt;7. Domain red flags?&lt;br&gt;8. What is out of scope?&lt;br&gt;9. ONE non-negotiable?" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=15;fillColor=#fffde7;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="660.0" y="630.0" width="210.0" height="180.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727223680325" value="&lt;b&gt;Approach Notes&lt;/b&gt;&lt;br&gt;Challenge vagueness&lt;br&gt;Push objectivity &amp;amp;&lt;br&gt;falsifiability&lt;br&gt;Probe Goodhart risks&lt;br&gt;Depth over breadth&lt;br&gt;No interrogation style" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;size=30;position=0.5;fillColor=#f3e8ff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="30.0" y="480.0" width="200.0" height="150.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727230436587" value="&lt;b&gt;Produce Structured Summary&lt;/b&gt;&lt;br&gt;Domain · Purpose&lt;br&gt;Data priorities · Eval priorities&lt;br&gt;Evidence standards&lt;br&gt;Goodhart risks · Skeptic focus&lt;br&gt;Out of scope · Core essence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="275.0" y="830.0" width="350.0" height="110.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727234529375" value="&lt;b&gt;RETURN to council:design&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300.0" y="1010.0" width="300.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727246846072" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="v_1773727194840149" target="v_1773727198709626">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727251719008" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#d6b656;fontColor=#d6b656;fontStyle=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="v_1773727198709626" target="v_1773727205878345">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727255415310" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="v_1773727198709626" target="v_1773727202371810">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727258397620" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="v_1773727205878345" target="v_1773727202371810">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727261539265" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="v_1773727202371810" target="v_1773727210238593">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727264469068" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="v_1773727210238593" target="v_1773727215345318">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727268283194" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#82b366;strokeWidth=2;fontColor=#82b366;fontStyle=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="v_1773727215345318" target="v_1773727230436587">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727271374444" value="No — continue" style="edgeStyle=orthogonalEdgeStyle;rounded=1;dashed=1;strokeColor=#b85450;strokeWidth=2;fontColor=#b85450;fontStyle=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;labelBackgroundColor=none;" edge="1" parent="1" source="v_1773727215345318" target="v_1773727210238593">
+          <mxGeometry x="-0.2" y="20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="150" y="705" />
+              <mxPoint x="150" y="535" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_1773727274273695" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;" edge="1" parent="1" source="v_1773727230436587" target="v_1773727234529375">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

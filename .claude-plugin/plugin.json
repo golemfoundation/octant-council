@@ -1,5 +1,5 @@
 {
   "name": "council",
-  "description": "Multi-agent evaluation council for public goods projects",
+  "description": "Council builder — generates multi-agent evaluation councils, not a council itself",
   "version": "1.0.0"
 }

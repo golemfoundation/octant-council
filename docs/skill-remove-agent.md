@@ -25,6 +25,7 @@ Remove an agent from the council with impact preview and safety guards.
 | `agents/$AGENT.md` | Always |
 | `docs/$AGENT.md` | If exists |
 | `research/$AGENT.md` | If exists |
+| `research/$AGENT.md` | If exists |
 
 ## Safety
 

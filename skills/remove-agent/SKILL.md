@@ -1,5 +1,4 @@
 ---
-name: remove-agent
 description: Remove an agent from the evaluation council
 argument-hint: [agent-name]
 allowed-tools:

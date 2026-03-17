@@ -1,5 +1,4 @@
 ---
-name: design
 description: Design your evaluation council — domain, agents, lenses, data sources
 argument-hint: [domain]
 allowed-tools:
@@ -398,11 +397,9 @@ Spawn ALL research agents in a **single message** for parallelism. Wait for all 
 ### 6b: Generate wave (parallel)
 
 For each NEW agent, determine its template file from the prefix:
-- `data-*` → use `agents/data-github.md` as template (if it exists)
-- `eval-*` → use `agents/eval-technical.md` as template (if it exists)
-- `synth-*` → use `agents/synth-chair.md` as template (if it exists)
-
-If the template doesn't exist (all agents of that type were removed), pick any remaining agent of the same type, or fall back to detailed instructions in the prompt.
+- `data-*` → use `skills/generate-agent/templates/data.md`
+- `eval-*` → use `skills/generate-agent/templates/eval.md`
+- `synth-*` → use `skills/generate-agent/templates/synth.md`
 
 Spawn a generation agent for each:
 
@@ -416,7 +413,7 @@ Agent(
 
     Read these files:
     1. research/[agent-name].md — domain expertise from research
-    2. agents/[SPECIFIC-TEMPLATE-FILENAME].md — use as structural template
+    2. skills/generate-agent/templates/[data|eval|synth].md — use as structural template
 
     Agent config from plan:
     - Purpose: [purpose]
@@ -426,16 +423,29 @@ Agent(
     Write the agent definition to agents/[agent-name].md following the
     exact frontmatter + body pattern of the template:
 
-    Frontmatter must have: name, description, tools (matching template's tool list).
+    Frontmatter must have: name, description, tools.
+    For eval agents, tools MUST include: Read, Write, Glob, WebSearch, WebFetch, SendMessage, TaskUpdate, TaskList
+    (evaluators need web access to independently verify claims — not just read data files).
+    For data agents, tools should match the template's tool list.
+    For synth agents, tools should match the template's tool list.
 
     Body structure for data agents: title, role description, Input ($PROJECT, $OUTPUT_DIR),
     Process (TaskUpdate claim → search/fetch → normalize → write → TaskUpdate complete →
     SendMessage), Output Format (markdown template with tables), edge cases.
 
     Body structure for eval agents: title, role description, Input ($PROJECT, $DATA_DIR,
-    $OUTPUT_DIR), Process (TaskUpdate claim → read data → score 5 dimensions → composite →
+    $OUTPUT_DIR), Process (TaskUpdate claim → read data → **independently verify key claims
+    using WebSearch/WebFetch** → score dimensions with cited evidence → composite →
     write → TaskUpdate complete → SendMessage), Scoring table, Output Format, Score calibration
     (9-10 exceptional / 7-8 strong / 5-6 adequate / 3-4 weak / 1-2 critical).
+
+    CRITICAL — Objectivity requirements for eval agents:
+    - Every score MUST cite specific evidence, not impressions
+    - Agents MUST flag when data is missing or unverifiable rather than guessing
+    - Agents MUST note Goodhart risks: where the metric could be gamed
+    - Agents SHOULD independently verify data agent claims where possible
+    - The tools list MUST include WebSearch and WebFetch so evaluators can do
+      their own research — they should not be limited to reading data agent output
 
     Body structure for synth agents: title, role description, Input ($PROJECT, $EVAL_DIR,
     $OUTPUT_PATH), Process (TaskUpdate claim → read evals → extract scores → find

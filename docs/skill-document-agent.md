@@ -3,12 +3,20 @@
 **Invocable:** No (called by `council:design` and `council:add-agent`)
 **Context:** Fork
 **Model:** sonnet
-**Args:** `<agent-name>` (e.g. `eval-governance`)
+**Args:** `$ARGUMENTS` — agent name (e.g. `data-audits`, `eval-governance`, `synth-debate`)
 **Tools:** Read, Write, Glob
 
 ## Purpose
 
 Generate a documentation page for an agent from its definition file.
+
+## Steps
+
+| Step | Action |
+|------|--------|
+| 1 | Read `agents/$ARGUMENTS.md` (required) and `research/$ARGUMENTS.md` (if present) |
+| 2 | Write `docs/$ARGUMENTS.md` using the template structure below |
+| 3 | Read back `docs/$ARGUMENTS.md` to verify all sections are present and accurate |
 
 ## Inputs
 

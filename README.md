@@ -1,58 +1,69 @@
-# Public Goods Evaluation Council
+# Council Builder
 
-Claude Code plugin for the [Octant hackathon](https://synthesis.md/hack/#octant). Multi-agent council evaluates public goods projects across three waves and produces a funding recommendation.
+A Claude Code plugin that **generates multi-agent evaluation councils**. It is not a council — it's a tool for building one. The default agents ship as a starting point for the [Octant hackathon](https://synthesis.md/hack/#octant), but they're scaffolding, not a finished product. Your job is to run `/council:design`, reshape the agents, and make something that actually evaluates well for your domain.
 
-## Setup
+Out of the box this does nothing useful. It needs your TLC to become a real evaluation tool.
 
-Give your AI coding agent this:
+## How it works
 
-> https://raw.githubusercontent.com/golemfoundation/octant-council/main/SKILL.md
-
-Or if you're using Claude Code directly:
-
-```
-/council:setup
-```
-
-Adds a shell alias to launch Claude Code with this plugin loaded. Asks for alias name, checks conflicts, writes to shell config. After setup, launch from anywhere with your alias.
-
-## Skills
-
-| Skill | Args | Purpose |
-|-------|------|---------|
-| `/council:setup` | — | Install shell alias for this plugin |
-| `/council:design [domain]` | `"DeFi protocols"` | Design a custom council: conversation → roster → plan → implement |
-| `/council:evaluate <project>` | `"Protocol Guild"` | Run the council on a project |
-| `/council:add-agent [wave] [name]` | `eval governance` | Add agent: conversation → research → generate → document |
-| `/council:remove-agent [name]` | `eval-financial` | Remove agent with impact preview |
-
-## Architecture
+You design a council through conversation. The plugin then researches your domain, generates specialized agents, and wires them into a three-wave execution pattern:
 
 ```
 Wave 1 — Data (parallel)        Wave 2 — Eval (parallel)       Wave 3 — Synth
 ┌──────────────────────┐        ┌──────────────────────┐       ┌──────────────────────┐
-│ data-github          │        │ eval-technical       │       │ synth-chair          │
-│ data-funding         │        │ eval-community       │       │                      │
-│ data-web             │───────▶│ eval-financial       │──────▶│ → REPORT.md          │
-│ data-onchain         │        │ eval-impact          │       │                      │
-│                      │        │ eval-skeptic         │       │                      │
+│ your data agents     │        │ your eval agents     │       │ your synth agent(s)  │
+│ gather raw info      │───────▶│ score independently  │──────▶│ synthesize verdict   │
+│ from external sources│        │ never see each other │       │ → REPORT.md          │
 └──────────────────────┘        └──────────────────────┘       └──────────────────────┘
- writes: council-out/$SLUG/data/    writes: council-out/$SLUG/eval/   writes: council-out/$SLUG/REPORT.md
 ```
 
-- Waves execute sequentially. All agents in a wave run in parallel.
-- Evaluators never see each other's scores.
-- Agents are discovered by filename prefix — no registry.
+Evaluators never see each other's scores. That's the point — independence prevents groupthink. The synthesizer *can* talk back to evaluators via team tools — asking clarifying questions, challenging scores, or requesting deeper analysis before writing the final report.
 
-## Agent Discovery
+## Get started
 
-| Prefix | Wave | Role | Tools |
-|--------|------|------|-------|
-| `agents/data-*.md` | 1 | Gather raw data from external sources | WebSearch, WebFetch |
-| `agents/eval-*.md` | 2 | Score project on 5 dimensions (1-10) | Read (data files only) |
-| `agents/synth-*.md` | 3 | Synthesize evaluations into report | Read (eval files only) |
+```bash
+# 1. Setup (one time — enables Claude teams + creates shell alias)
+/council:setup
 
-Add agent = create markdown file with right prefix. Remove agent = delete the file.
+# 2. Try the default scaffold on a real project to see the pattern
+/council:evaluate Aave DAO
+
+# 3. Now make it yours — this is the real step
+/council:design DeFi lending protocols
+/council:design climate impact DAOs
+/council:design developer tooling grants
+```
+
+Step 3 is where the work happens. `/council:design` runs a conversation to understand your domain, proposes an agent roster, researches each agent's domain, and generates the definitions. The council you end up with is yours.
+
+## Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `/council:setup` | Install shell alias for this plugin |
+| `/council:design [domain]` | **Design your council** — conversation → roster → research → generate |
+| `/council:evaluate <project>` | Run the council on a project |
+| `/council:add-agent` | Add a single agent via conversation → research → generate |
+| `/council:remove-agent` | Remove an agent with impact preview |
+
+## What you can change
+
+**Everything.** The plugin is a council *factory*, not a council.
+
+- **`/council:design`** — redesign the entire council for a new domain. New agents, new dimensions, new data sources.
+- **`/council:add-agent`** / **`/council:remove-agent`** — tune the roster one agent at a time.
+- **Edit agents directly** — every agent is a markdown file in `agents/`. Change scoring dimensions, data sources, calibration. The orchestrator discovers agents by filename prefix, no config to update.
+- **Change the output** — modify agent templates to produce JSON, comparison matrices, grant proposals, whatever.
+
+## Agent discovery
+
+| Prefix | Wave | Role |
+|--------|------|------|
+| `agents/data-*.md` | 1 | Gather raw data from external sources |
+| `agents/eval-*.md` | 2 | Score project on 5 dimensions (1-10) |
+| `agents/synth-*.md` | 3 | Synthesize evaluations into report |
+
+Add agent = create markdown file with right prefix. Remove agent = delete the file. No registry.
 
 ## Output
 
@@ -63,62 +74,36 @@ council-out/{slug}/
 └── REPORT.md       ← Wave 3 output (final verdict)
 ```
 
-## Plugin Structure
-
-```
-.claude-plugin/plugin.json       ← Plugin manifest (name: "council")
-agents/                          ← Agent definitions (auto-discovered)
-skills/                          ← Skill definitions
-├── setup/SKILL.md
-├── design/SKILL.md
-├── design-conversation/SKILL.md
-├── evaluate/SKILL.md
-├── add-agent/SKILL.md
-├── remove-agent/SKILL.md
-├── design-agent-conversation/SKILL.md
-├── research-agent/SKILL.md
-├── generate-agent/SKILL.md
-└── document-agent/SKILL.md
-docs/                            ← Per-skill documentation
-research/                        ← Domain research (generated by design/add-agent)
-council-out/                     ← Evaluation output (generated by evaluate)
-```
-
-## Customization
-
-### Manual
-
-```bash
-cp agents/eval-technical.md agents/eval-governance.md
-# Edit frontmatter (name, description) and 5 scoring dimensions
-# Orchestrator discovers it on next /council:evaluate run
-```
-
-### Interactive
-
-```
-/council:add-agent eval governance
-/council:remove-agent eval-financial
-/council:design DeFi protocols
-```
-
-### Synthesis Approaches
+## Synthesis approaches
 
 | Approach | Agents | How it works |
 |----------|--------|-------------|
 | Single chair (default) | `synth-chair` | Reads all evals, produces unified report |
-| Debate | `synth-bull` + `synth-bear` + `synth-chair` | Bull argues FOR, bear argues AGAINST, chair decides |
+| Debate | `synth-bull` + `synth-bear` + `synth-chair` | Bull argues FOR, bear AGAINST, chair decides |
 | Ranked | `synth-ranker` (replaces chair) | Compares project against alternatives |
 
 Configure via `/council:design`.
 
-## Fork Ideas
+## Sharing your council
 
-| Domain | Swap | Add |
-|--------|------|-----|
-| DeFi | `data-web` → `data-audits` | `eval-security` |
-| L2 | — | `data-l2beat`, `eval-decentralization` |
-| Grants | — | `data-milestones`, `eval-delivery` |
-| Research | `data-onchain` → `data-papers` | `eval-novelty` |
+This is a Claude Code plugin — a repo with `.claude-plugin/plugin.json` and some markdown files. Once you design your own council via `/council:design`, anyone can install it:
 
-The harness (orchestrator + wave pattern) stays the same. Swap agents for your domain.
+1. Push your fork
+2. Share the repo URL
+3. They paste this into Claude Code (replacing the URL with yours):
+   ```
+   fetch https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/main/SKILL.md and follow the instructions
+   ```
+
+No packaging, no publishing, no registry. A council is just a repo. Fork it, redesign the agents, push it, share the URL.
+
+## Domain ideas
+
+| Domain | Swap/add | Why |
+|--------|----------|-----|
+| DeFi | `data-audits`, `eval-security` | Security and audit trail matter |
+| L2 rollups | `data-l2beat`, `eval-decentralization` | L2Beat has the data |
+| Grants | `data-milestones`, `eval-delivery` | Track record of shipping |
+| Research | `data-papers`, `eval-novelty` | Academic rigor |
+
+The execution harness (orchestrator + wave pattern) stays the same. Swap agents for your domain.

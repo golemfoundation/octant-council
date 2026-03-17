@@ -15,9 +15,9 @@ Add a new agent to the council: conversation → research → generate → docum
 | 1 | Glob `agents/{data,eval,synth}-*.md`. Display roster by wave. If `$ARGUMENTS` has wave, store as `$WAVE` and skip selection. Otherwise ask. |
 | 2 | Invoke `council:design-agent-conversation` with `$WAVE` and `$NAME`. Extracts: name, description, purpose, sources/dimensions, research brief. |
 | 3 | Append plan entry to plan context. Spawn research sub-agent → writes `research/$WAVE-$NAME.md` |
-| 4 | Resolve template (`data-github.md` / `eval-technical.md` / `synth-chair.md`). Spawn generate sub-agent → writes `agents/$WAVE-$NAME.md` |
+| 4 | Resolve template (`skills/generate-agent/templates/data.md` / `eval.md` / `synth.md`). Spawn generate sub-agent → writes `agents/$WAVE-$NAME.md` |
 | 5 | Spawn doc sub-agent → writes `docs/$WAVE-$NAME.md` |
-| 6 | Update `README.md` flow diagram. Report created files. |
+| 6 | Update `README.md` flow diagram. Display created files and suggest next step. |
 
 ## Sub-skills
 
@@ -37,5 +37,4 @@ Add a new agent to the council: conversation → research → generate → docum
 
 | File | Change |
 |------|--------|
-| plan context | New agent entry appended |
 | `README.md` | Flow diagram updated |

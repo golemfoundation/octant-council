@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="cli-anything" agent="cli-anything-drawio/1.0.0" version="24.0.0">
+  <diagram id="diagram_1773727188727723" name="Page-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="v_1773727192637228" value="START" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1e4d78;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="420.0" y="40.0" width="160.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727197012010" value="&lt;b&gt;Parse $ARGUMENTS&lt;/b&gt;&lt;br&gt;first word = wave type (data/eval/synth)&lt;br&gt;second word = name hint (if present)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="320.0" y="130.0" width="360.0" height="70.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727202416441" value="Wave Type?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="380.0" y="250.0" width="240.0" height="80.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727209214257" value="&lt;b&gt;Data Probes&lt;/b&gt;&lt;br&gt;APIs / URLs&lt;br&gt;Data format&lt;br&gt;Key metrics to extract&lt;br&gt;Missing-data fallback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60.0" y="390.0" width="210.0" height="100.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727209271543" value="&lt;b&gt;Eval Probes&lt;/b&gt;&lt;br&gt;5 scoring dimensions&lt;br&gt;6 vs 8 distinction&lt;br&gt;Priority conflicts&lt;br&gt;Goodhart vulnerabilities&lt;br&gt;Independent verification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="390.0" y="390.0" width="220.0" height="110.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727209328759" value="&lt;b&gt;Synth Probes&lt;/b&gt;&lt;br&gt;Audience &amp;amp; decision&lt;br&gt;Output structure&lt;br&gt;Handling disagreement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="730.0" y="390.0" width="210.0" height="100.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727213973816" value="&lt;b&gt;Open Conversation&lt;/b&gt;&lt;br&gt;Follow their energy&lt;br&gt;Challenge vague answers&lt;br&gt;Demand falsifiable evidence" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="330.0" y="560.0" width="340.0" height="80.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727218587901" value="All fields&lt;br&gt;complete?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="390.0" y="710.0" width="220.0" height="80.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727229413972" value="Fields needed:&lt;br&gt;Agent name (wave-name) ✓&lt;br&gt;One-line description ✓&lt;br&gt;Detailed purpose ✓&lt;br&gt;Sources/Dimensions/Method ✓&lt;br&gt;Research brief ✓" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=15;fillColor=#fffde7;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="680.0" y="695.0" width="240.0" height="110.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727232835248" value="&lt;b&gt;Continue Conversation&lt;/b&gt;&lt;br&gt;Ask follow-up probe&lt;br&gt;Challenge vagueness&lt;br&gt;Objectivity trap check" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="330.0" y="870.0" width="340.0" height="80.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727236436186" value="&lt;b&gt;Constraints&lt;/b&gt;&lt;br&gt;Stay scoped to single agent&lt;br&gt;Demand falsifiable evidence&lt;br&gt;Probe Goodhart vulnerabilities&lt;br&gt;Don't design it yourself —&lt;br&gt;extract from user" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;size=15;fillColor=#fce8e8;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="30.0" y="700.0" width="230.0" height="120.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727240146374" value="&lt;b&gt;Exit: Design Summary&lt;/b&gt;&lt;br&gt;Name: [wave]-[name]&lt;br&gt;Description: one-line&lt;br&gt;Purpose: 2-3 sentences&lt;br&gt;Sources / Dimensions / Method&lt;br&gt;Research needed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="310.0" y="1050.0" width="380.0" height="110.0" as="geometry" />
+        </mxCell>
+        <mxCell id="v_1773727242946839" value="END" style="ellipse;whiteSpace=wrap;html=1;fillColor=#1e4d78;fontColor=#ffffff;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="420.0" y="1210.0" width="160.0" height="50.0" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727281204732" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727192637228" target="v_1773727197012010">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727290711367" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727197012010" target="v_1773727202416441">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727302425155" value="data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727202416441" target="v_1773727209214257">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727305801662" value="eval" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727202416441" target="v_1773727209271543">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727305864128" value="synth" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727202416441" target="v_1773727209328759">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727329178310" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727209214257" target="v_1773727213973816">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727329235503" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727209271543" target="v_1773727213973816">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727329292832" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727209328759" target="v_1773727213973816">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727346812826" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727213973816" target="v_1773727218587901">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727361659546" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727218587901" target="v_1773727232835248">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727371574956" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;dashed=1;" edge="1" parent="1" source="v_1773727232835248" target="v_1773727218587901">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727380398665" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727218587901" target="v_1773727240146374">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_1773727392868435" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="v_1773727240146374" target="v_1773727242946839">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

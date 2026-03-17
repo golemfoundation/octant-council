@@ -1,5 +1,4 @@
 ---
-name: design-agent-conversation
 description: Conversational dialogue to design a single council agent — data source, eval lens, or synthesis method.
 argument-hint: <wave-type> [context]
 allowed-tools:
@@ -22,6 +21,10 @@ You are a **design partner** helping the user articulate a precise agent definit
 - Stay scoped to this single agent — don't revisit council-level design
 - Challenge vague dimensions and generic data sources
 - Push for concrete scoring criteria or specific APIs/URLs
+- Demand **falsifiable evidence standards** for every dimension — "what data proves a 3 vs a 7?"
+- Probe **Goodhart vulnerabilities** for every metric — "how would a project game this score?"
+- Push for **depth** — fewer dimensions with rigorous evidence beats many shallow ones
+- Ensure agents have access to **all tools they need** — evaluators should be able to verify data independently, not just read what data agents wrote
 - Stop when you have enough for research + generation
 </constraints>
 
@@ -101,6 +104,9 @@ Probe on specifics based on wave type:
 - "What's the difference between a 6 and an 8 on [dimension]?"
 - "Which of the 5 dimensions is most important? If they conflict, which wins?"
 - "What evidence from the data files would support a high/low score?"
+- "If a project gamed this metric, would it still deserve a high score? If not, what's the counter-measure?"
+- "Could two independent evaluators reach the same score from the same data? What makes it reproducible?"
+- "Should this evaluator do its own independent verification (web search, on-chain lookup) or only use data agent output?"
 
 **Synth agent probes:**
 - "Who reads this output? What decision does it inform?"
@@ -118,6 +124,12 @@ Domain-specific vagueness to catch:
 - "Security score" → "Based on what — audit count? Bug bounty size? Exploit history? All three?"
 - "Community health" → "Forum activity? Discord members? Governance participation rate?"
 - "Good documentation" → "API reference? Architecture docs? Tutorials? All of these?"
+
+**Objectivity traps to catch:**
+- Self-reported metrics → "That's what the project claims — how would the evaluator independently verify it?"
+- Vanity metrics → "High GitHub stars or Discord members — does that correlate with what you actually care about?"
+- Proxy collapse → "You're measuring X as a proxy for Y — but a project could have high X and low Y. How to catch that?"
+- Missing base rates → "Is a score of 7 meaningful without knowing what's typical in this domain?"
 
 ---
 

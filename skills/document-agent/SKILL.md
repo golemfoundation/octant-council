@@ -1,5 +1,4 @@
 ---
-name: document-agent
 description: Generate a documentation page for a council agent
 argument-hint: <agent-name>
 allowed-tools:

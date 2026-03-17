@@ -1,5 +1,4 @@
 ---
-name: add-agent
 description: Add a new agent to the evaluation council
 argument-hint: [wave] [name]
 allowed-tools:
@@ -150,15 +149,13 @@ Wait for research to complete.
 
 ## Step 4: Generate Agent Definition
 
-Determine the template agent filename (resolve before building the prompt):
+Determine the template filename from the wave type:
 
 ```
-data → $TEMPLATE = "agents/data-github.md"
-eval → $TEMPLATE = "agents/eval-technical.md"
-synth → $TEMPLATE = "agents/synth-chair.md"
+data → $TEMPLATE = "skills/generate-agent/templates/data.md"
+eval → $TEMPLATE = "skills/generate-agent/templates/eval.md"
+synth → $TEMPLATE = "skills/generate-agent/templates/synth.md"
 ```
-
-If the preferred template doesn't exist (removed during customization), Glob `agents/$WAVE-*.md` and pick the first match. If no agents of that type exist, set `$TEMPLATE = "none"`.
 
 Spawn a generation agent with the **resolved** template path (never pass a literal placeholder):
 
@@ -183,13 +180,10 @@ Agent(
     pattern of the template. Include:
     - Correct frontmatter (name, description, tools matching template)
     - Same section structure as template
+    - Replace all UPPER_CASE placeholders with specific values from the design
     - Specific [sources/dimensions] from the design
     - Domain-appropriate score calibration (for eval agents)
     - $PROJECT, $DATA_DIR/$OUTPUT_DIR variable placeholders
-
-    If no template file was provided, use this structure:
-    - Frontmatter: name, description, tools (data agents get WebSearch+WebFetch, eval/synth don't)
-    - Sections: title, role description, Input, Process (numbered steps with TaskUpdate + SendMessage), Output Format, edge cases or calibration
   "
 )
 ```

@@ -23,8 +23,8 @@ Both lines are tagged with `# public-goods-council` for clean removal/update.
 |------|--------|
 | 1 | Detect shell (`$SHELL`), config file, plugin directory |
 | 2 | Explain both changes (alias + teams env var) and ask to proceed |
-| 3 | Ask for alias name (text input) |
-| 4 | Validate: non-empty, alphanumeric, not already taken |
+| 3 | Ask for alias name (text input); validate: non-empty, alphanumeric + hyphens + underscores, no spaces |
+| 4 | Check alias availability; prompt to overwrite or pick a different name |
 | 5 | Remove any existing tagged lines, append new alias + env var |
 | 6 | Report: what was added, how to activate, what to try |
 

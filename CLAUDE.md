@@ -1,8 +1,59 @@
 # CLAUDE.md
 
+## Onboarding (respond with this when users ask how to use the council)
+
+When a user asks how this works, what this is, or how to get started, respond with ONLY the following — no extras, no full skill table, no architecture deep-dive:
+
+---
+
+This is a council builder — a tool that generates multi-agent evaluation councils, not a council itself. It uses a three-wave pattern of parallel agents:
+
+1. **Wave 1 — Data**: agents gather raw information from external sources
+2. **Wave 2 — Eval**: independent evaluators score the project from different lenses — they never see each other's scores
+3. **Wave 3 — Synthesis**: a synthesis agent combines everything into a final report — it can talk back to evaluators via team tools to ask clarifying questions, challenge scores, or request deeper analysis before writing the final output
+
+The repo ships with default scaffold agents for Ethereum/Octant public goods, but they're a starting point — not a finished product. **The whole point is that you run `/council:design` and reshape it into your own council.** Every time you run `/council:design`, `/council:add-agent`, or `/council:remove-agent`, you're changing which agents exist and what they evaluate. The council you end up with is yours.
+
+### Get started
+
+1. Run setup (one time — this enables Claude teams, which the plugin needs for inter-agent communication):
+   ```
+   /council:setup
+   ```
+
+2. Try the default scaffold on a real project to see the pattern:
+   ```
+   /council:evaluate Aave DAO
+   ```
+
+3. Then make it yours. You have several options:
+
+   **Redesign the whole council** for a different domain:
+   ```
+   /council:design DeFi lending protocols
+   /council:design climate impact DAOs
+   /council:design developer tooling grants
+   ```
+
+   **Add or remove individual agents** to tune what gets evaluated:
+   ```
+   /council:add-agent
+   /council:remove-agent
+   ```
+
+   **Edit agents directly** — every agent is just a markdown file in `agents/`. Change scoring dimensions, add data sources, adjust calibration. The orchestrator discovers agents by filename prefix, so there's no config to update.
+
+   **Change what gets produced** — modify agent output templates to generate JSON, comparison matrices, grant proposals, or whatever artifact your use case needs.
+
+Start with step 2 — run an evaluation, read the report, then decide what to change.
+
+Then ask the user: "Want to try `/council:evaluate Aave DAO` to see the scaffold in action?"
+
+---
+
 ## Overview
 
-Claude Code plugin — multi-agent evaluation council for public goods projects. Three waves of agents (data → evaluation → synthesis) produce a structured report with funding recommendation.
+Claude Code plugin that generates multi-agent evaluation councils. Ships with scaffold agents for public goods — run `/council:design` to make it yours. Three-wave pattern: data → evaluation → synthesis.
 
 ## Plugin Structure
 
@@ -18,11 +69,11 @@ council-out/  Runtime evaluation output (created by evaluate skill)
 
 | Skill | Invocable | Purpose |
 |-------|-----------|---------|
-| `council:setup` | Yes | Install plugin alias into your shell |
-| `council:design` | Yes | Design a custom council (plan mode → implementation) |
-| `council:evaluate` | Yes | Run the council on a project |
-| `council:add-agent` | Yes | Add an agent: conversation → research → generate → document |
-| `council:remove-agent` | Yes | Remove an agent with impact preview |
+| `council:setup` | Yes | Install the council plugin — shell alias + teams feature + permissions |
+| `council:design` | Yes | Design your evaluation council — domain, agents, lenses, data sources |
+| `council:evaluate` | Yes | Evaluate a public goods project using a multi-agent council |
+| `council:add-agent` | Yes | Add a new agent to the evaluation council |
+| `council:remove-agent` | Yes | Remove an agent from the evaluation council |
 | `council:design-conversation` | No | Sub-skill: council domain discovery |
 | `council:design-agent-conversation` | No | Sub-skill: single agent design |
 | `council:research-agent` | No | Sub-skill: domain research for an agent |
