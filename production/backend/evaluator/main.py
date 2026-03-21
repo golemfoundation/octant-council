@@ -5,10 +5,20 @@ Serves final reports and EAS attestation data.
 """
 import os
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+
+
+SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,39}$")
+
+
+def validate_slug(slug: str) -> str:
+    if not SLUG_PATTERN.match(slug):
+        raise HTTPException(status_code=400, detail=f"Invalid slug: '{slug}'. Use only lowercase letters, numbers, and hyphens.")
+    return slug
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -20,7 +30,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("CORS_ORIGINS", "*")],
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -90,6 +100,7 @@ def evaluate(req: EvaluateRequest):
 
 @app.get("/evaluate/{slug}/report")
 def get_report(slug: str):
+    validate_slug(slug)
     report_path = COUNCIL_OUT / slug / "synth" / "ostrom-report.md"
     if not report_path.exists():
         # Fall back to REPORT.md at slug root
@@ -102,6 +113,7 @@ def get_report(slug: str):
 
 @app.get("/evaluate/{slug}/eas")
 def get_eas_attestation(slug: str):
+    validate_slug(slug)
     eas_path = COUNCIL_OUT / slug / "synth" / "eas-attestations.json"
     if not eas_path.exists():
         raise HTTPException(status_code=404, detail=f"No EAS attestation for slug '{slug}'")
@@ -115,6 +127,7 @@ def get_eas_attestation(slug: str):
 @app.get("/evaluate/{slug}/ostrom-radar")
 def get_ostrom_radar_data(slug: str):
     """Return Ostrom scores formatted for radar chart rendering."""
+    validate_slug(slug)
     ostrom_path = COUNCIL_OUT / slug / "eval" / "ostrom-scores.json"
     if not ostrom_path.exists():
         raise HTTPException(status_code=404, detail=f"No Ostrom scores for slug '{slug}'")
@@ -146,6 +159,7 @@ def get_ostrom_radar_data(slug: str):
 @app.get("/dashboard/{slug}")
 def get_dashboard_data(slug: str):
     """Aggregate all data for the dashboard view of a single project."""
+    validate_slug(slug)
     slug_dir = COUNCIL_OUT / slug
 
     if not slug_dir.exists():

@@ -4,11 +4,19 @@ Reads council-out/ data and triggers Wave 1 data agents.
 """
 import os
 import json
-import glob
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+
+SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,39}$")
+
+
+def validate_slug(slug: str) -> str:
+    if not SLUG_PATTERN.match(slug):
+        raise HTTPException(status_code=400, detail=f"Invalid slug: '{slug}'")
+    return slug
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -20,7 +28,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("CORS_ORIGINS", "*")],
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -71,6 +79,7 @@ def collect(req: CollectRequest):
 
 @app.get("/collect/{slug}")
 def get_collected_data(slug: str):
+    validate_slug(slug)
     data_dir = COUNCIL_OUT / slug / "data"
     if not data_dir.exists():
         raise HTTPException(status_code=404, detail=f"No data for slug '{slug}'")

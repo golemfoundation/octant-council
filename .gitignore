@@ -1,5 +1,8 @@
 council-out/
 
+# Local Claude config
+.claude/settings.local.json
+
 # Production build artifacts
 production/frontend/node_modules/
 production/frontend/.next/

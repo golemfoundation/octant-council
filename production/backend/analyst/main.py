@@ -4,10 +4,19 @@ Reads collected data and triggers Wave 2 evaluation agents.
 """
 import os
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
+
+SLUG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]{0,39}$")
+
+
+def validate_slug(slug: str) -> str:
+    if not SLUG_PATTERN.match(slug):
+        raise HTTPException(status_code=400, detail=f"Invalid slug: '{slug}'")
+    return slug
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -19,7 +28,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("CORS_ORIGINS", "*")],
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -68,6 +77,7 @@ def analyse(req: AnalyseRequest):
 
 @app.get("/analyse/{slug}")
 def get_analysis(slug: str):
+    validate_slug(slug)
     eval_dir = COUNCIL_OUT / slug / "eval"
     if not eval_dir.exists():
         raise HTTPException(status_code=404, detail=f"No evaluation for slug '{slug}'")
@@ -87,6 +97,7 @@ def get_analysis(slug: str):
 
 @app.get("/analyse/{slug}/ostrom")
 def get_ostrom_scores(slug: str):
+    validate_slug(slug)
     ostrom_path = COUNCIL_OUT / slug / "eval" / "ostrom-scores.json"
     if not ostrom_path.exists():
         raise HTTPException(status_code=404, detail=f"No Ostrom scores for slug '{slug}'")
